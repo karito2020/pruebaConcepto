@@ -15,32 +15,33 @@ import { catchError, retry } from 'rxjs/operators'; */
 
 export class AppComponent {
   title = 'myapp';
-  instanceNumber :number=0;
-  form : FormGroup;
+  instanceNumber: number = 0;
+  form: FormGroup;
+  resultList: any[] = [];
 
-constructor(private taskService : TaskService,private http: HttpClient, fb:FormBuilder){
+  constructor(private taskService: TaskService, private http: HttpClient, fb: FormBuilder) {
     this.form = fb.group({
-      email : ["", Validators.email],
-      password :["",Validators.minLength(4)]
+      email: ["", Validators.email],
+      password: ["", Validators.minLength(4)]
     })
-    
+
   }
 
-  getLoginListas():void{
-  this.taskService.loginUser(this.form.value);
-}
-continueprocess(){
-  this.taskService.continue();
-}
+  getLoginListas(): void {
+    this.taskService.loginUser(this.form.value);
+  }
+  continueprocess() {
+    this.resultList = this.taskService.continue();
+  }
 
-//-----------------prueba funcional------------------------
- /* var url='http://localhost:8080/kie-server/services/rest/server/containers/LoginListas_1.0.0-SNAPSHOT';
-  const headers = new HttpHeaders()
-  .set('Authorization',  `Basic ${btoa('wbadmin:wbadmin')}`)
-  .set('Access-Control-Allow-Origin','*')
-  .set('Accept','application/json');
-  console.log("iniciando peticion");
-  
-  this.http.get<any>(url,
-  {headers:headers}).subscribe(result=>{console.log("mi resultado",result)});  */  
+  //-----------------prueba funcional------------------------
+  /* var url='http://localhost:8080/kie-server/services/rest/server/containers/LoginListas_1.0.0-SNAPSHOT';
+   const headers = new HttpHeaders()
+   .set('Authorization',  `Basic ${btoa('wbadmin:wbadmin')}`)
+   .set('Access-Control-Allow-Origin','*')
+   .set('Accept','application/json');
+   console.log("iniciando peticion");
+   
+   this.http.get<any>(url,
+   {headers:headers}).subscribe(result=>{console.log("mi resultado",result)});  */
 }
