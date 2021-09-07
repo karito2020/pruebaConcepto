@@ -213,7 +213,7 @@ export class TaskService {
     /* var flag=false; */
     setTimeout(() => {
       
-      if(this.resultFinal["variable-instance"][0]["value"]){
+      if(this.resultFinal["variable-instance"].length >0){
       //git aconsole.log(this.resultFinal["variable-instance"][0]["value"]);
       var myresult=this.resultFinal["variable-instance"][0]["value"];
 console.log(myresult["statusCode"]);
