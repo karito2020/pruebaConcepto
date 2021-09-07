@@ -54,12 +54,12 @@
       </thead>
       <tbody>
         <tr *ngFor="let result of resultList">
-          <td>{{ result.prioridad }}</td>
-          <td>{{ result.tipo_documento }}</td>
-          <td>{{ result.documento }}</td>
-          <td>{{ result.nombre }}</td>
-          <td>{{ result.numero_tipo_lista }}</td>
-          <td>{{ result.nombre_lista }}</td>
+          <td>{{ result.prioridad? result.prioridad:"No result"}}</td>
+          <td>{{ result.tipo_documento? result.tipo_documento:"No result"}}</td>
+          <td>{{ result.documento? result.documento:"No result" }}</td>
+          <td>{{ result.nombre? result.nombre:"No result" }}</td>
+          <td>{{ result.numero_tipo_lista? result.numero_tipo_lista:"No result" }}</td>
+          <td>{{ result.nombre_lista? result.nombre_lista:"No result" }}</td>
         </tr>
       </tbody>
     </table>

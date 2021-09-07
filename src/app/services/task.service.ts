@@ -18,6 +18,7 @@ export class TaskService {
   dataJsonInstance: any;
   parsedJson: any;
   resultFinal: any = {};
+  
 
   constructor(private http: HttpClient) {
     this.url = 'http://localhost:8080/kie-server/services/rest/server/containers/LoginListas_1.0.0-SNAPSHOT';
@@ -33,7 +34,7 @@ export class TaskService {
     return this.http.get<any>(this.url, { headers: this.headers });
   }
 
-  async initInstance() {
+   initInstance(){
     const _this = this;
     console.log("1. CREANDO INSTANCIA");
     const path = `${this.apigeneral}/processes/Login_LIstas.Login_Listas/instances`;
@@ -46,11 +47,11 @@ export class TaskService {
 
     setTimeout(() => {
       console.log("por fuerita", `${this.numberInstance}`, this.numberInstance);
-    }, 1000);
+    }, 500);
 
   }
 
-  getTaskNumber() {
+  getTaskNumber(){
     //this.initInstance();
     setTimeout(() => {
       console.log("this.numberI", this.numberInstance);
@@ -64,7 +65,7 @@ export class TaskService {
           this.dataInstance = result;
           console.log("result", result)
         });
-    }, 3000);
+    }, 1500);
 
     setTimeout(() => {
       console.log(typeof (this.dataInstance));
@@ -72,13 +73,13 @@ export class TaskService {
       this.parsedJson = Object.values(this.dataInstance["active-user-tasks"]);
       this.numberTask = this.parsedJson[0][0]["task-id"];
       console.log("numero de tarea", this.numberTask);
-    }, 4000);
+    }, 2000);
 
     //const path=`${this.apigeneral}/processes/instances/${this.numberInstance}`;
     //return this.http.get<any>(this.path2,{headers:this.headers});
   }
 
-  startTask() {
+   startTask() {
     setTimeout(() => {
       console.log(this.numberTask);
       console.log("3. INICIANDO TAREA");
@@ -95,11 +96,11 @@ export class TaskService {
         () => {
           console.log(" PUT ha sido completado");
         });
-    }, 6000);
+    }, 3000);
 
   }
 
-  setVariablesProcess(variablesForm: any) {
+   setVariablesProcess(variablesForm: any) {
     setTimeout(() => {
       console.log("4. INGRESANDO VARIABLES AL PROCESO");
       console.log(this.numberInstance);
@@ -118,11 +119,11 @@ export class TaskService {
           () => {
             console.log("POST se completó.");
           });
-    }, 7000);
+    }, 4500);
 
   }
 
-  finishTask() {
+  async finishTask() : Promise<any>{
     setTimeout(() => {
       console.log("5. FINALIZANDO TAREA");
       console.log(this.numberTask);
@@ -138,7 +139,7 @@ export class TaskService {
         () => {
           console.log(" PUT se ha completado.");
         });
-    }, 8000);
+    }, 6500);
 
   }
   getFinalResult() {
@@ -156,31 +157,19 @@ export class TaskService {
 
   fixResultFinal(){
     console.log(this.resultFinal);
-    var parsedata: string = "";
-    var varr2;
-    /*parsedata = JSON.parse(this.resultFinal);  
-    console.log("With Parsed JSON :" , parsedata); */
-
-    console.log(Object.values(this.resultFinal["variable-instance"]));
     this.parsedJson = Object.values(this.resultFinal["variable-instance"]);
-    /* parsedata = JSON.stringify(this.parsedJson);  
-       console.log("With Stringify :" , parsedata); 
-   
-       varr2= JSON.parse(parsedata);  
-       console.log("With Parsed JSON :" , varr2); 
-    */
     console.log(this.parsedJson[0]["value"]);
-
     var resultParcial = this.parsedJson[0]["value"];
     var mydata = resultParcial.split("#");
-    var consulta = new Array();
+    console.log(mydata);
+     var consulta = new Array(); 
 
-    var count = 0;
     if (mydata[2]) {
       for (var i = 2; i < mydata.length; i++) {
-        count++;
-        //print(count, 'contador')
         var currentList = mydata[i].split("|");
+        console.log(currentList);
+        console.log("nombre_lista-trim", currentList[6].split(':')[1].trim().replace("</string>", ""));
+        console.log("nombre_lista-no", currentList[6].split(':')[1].replace("</string>", ""));
         consulta.push({
           "prioridad": currentList[1].split(':')[1].trim(),
           "tipo_documento": currentList[2].split(':')[1].trim(),
@@ -195,7 +184,7 @@ export class TaskService {
     } else {
       console.log('No se han encotrado resultados para este usuario');
     }
-    console.log("esta es la final", consulta);
+    console.log("esta es la final",consulta);
     return consulta;
 
   }
@@ -205,8 +194,11 @@ export class TaskService {
     this.getTaskNumber();
     this.startTask();
     this.setVariablesProcess(valuesForm);
-    this.finishTask();
-    this.getFinalResult();
+    this.finishTask().then(res => {this.getFinalResult()});
+    /* setTimeout(() => {
+      this.fixResultFinal();
+    }, 25000); */
+   
   }
   continue() {
     return this.fixResultFinal();

@@ -29,6 +29,10 @@ export class AppComponent {
 
   getLoginListas(): void {
     this.taskService.loginUser(this.form.value);
+    setTimeout(() => {
+      this.continueprocess();
+    }, 25000);
+    
   }
   continueprocess() {
     this.resultList = this.taskService.continue();
