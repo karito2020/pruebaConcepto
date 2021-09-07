@@ -214,7 +214,7 @@ export class TaskService {
     setTimeout(() => {
       
       if(this.resultFinal["variable-instance"][0]["value"]){
-      //console.log(this.resultFinal["variable-instance"][0]["value"]);
+      //git aconsole.log(this.resultFinal["variable-instance"][0]["value"]);
       var myresult=this.resultFinal["variable-instance"][0]["value"];
 console.log(myresult["statusCode"]);
 console.log(typeof(myresult["statusCode"]));
