@@ -29,15 +29,22 @@ export class LoginComponent implements OnInit {
   }
 
 
-  getLoginListas(): void {
-    // this.taskService.loginUser(this.form.value);
-    Swal.fire(
-      'Lo sentimos',
-      'Los datos ingresados son incorrectos',
-      'error'
-    )
-    // this.router.navigate(['/dashboard']);
+  getLoginListas() {
+   this.taskService.loginUser(this.form.value);
+    console.log("esta es la bandera",this.taskService.flag);
+   setTimeout(() => {
+    console.log("esta es la bandera esperando",this.taskService.flag);
+   if(this.taskService.flag == true){
+      this.router.navigate(['/dashboard'])}else{
+       Swal.fire(
+        'Lo sentimos',
+        'Los datos ingresados son incorrectos',
+        'error'
+      );
+       }
+    }, 22000);
   }
+
   continueprocess() {
     this.resultList = this.taskService.continue();
   }

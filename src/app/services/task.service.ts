@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { error } from '@angular/compiler/src/util';
+import { DepFlags } from '@angular/compiler/src/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class TaskService {
   dataJsonInstance: any;
   parsedJson: any;
   resultFinal: any = {};
+  flag: boolean =false;
   
 
   constructor(private http: HttpClient) {
@@ -142,6 +145,22 @@ export class TaskService {
     }, 6500);
 
   }
+  /*METODO PARA OBTENER EL RESULTADO DEL SERVICIO DE LOGIN*/
+  async getResultLogin(): Promise<any> {
+    setTimeout(() => {
+      console.log("*. OBTENIENDO RESULTADO DE LOGIN");
+      //this.path3=`http://localhost:8080/kie-server/services/rest/server/queries/processes/instances/${this.numberInstance}/variables/instances/resultListas`;
+      this.path3 = `http://localhost:8080/kie-server/services/rest/server/queries/processes/instances/${this.numberInstance}/variables/instances/resultLogin`;
+      this.http.get(this.path3, { headers: this.headers }).
+        subscribe(result => {
+          this.resultFinal = result;
+          console.log("result login", result)
+        });
+    }, 20000);
+  }
+
+
+/*METODO PARA OBTENER EL RESUKTADO FINAL DE LAS LISTAS INHIBITORIAS*/ 
   getFinalResult() {
     setTimeout(() => {
       console.log("6. OBTENIENDO RESULTADO FINAL");
@@ -188,18 +207,75 @@ export class TaskService {
     return consulta;
 
   }
+
+
+  selectDashboardLogin(){
+    /* var flag=false; */
+    setTimeout(() => {
+      
+      if(this.resultFinal["variable-instance"][0]["value"]){
+      //console.log(this.resultFinal["variable-instance"][0]["value"]);
+      var myresult=this.resultFinal["variable-instance"][0]["value"];
+console.log(myresult["statusCode"]);
+console.log(typeof(myresult["statusCode"]));
+var textJson= JSON.parse(myresult+'"'+"}}");
+console.log(textJson);
+      if(textJson.statusCode == "200"){
+        console.log("dashboard bienvenido");
+        this.flag=true;
+      }else{
+        this.flag=false;
+      }}else{
+        this.flag=false;
+      }
+    }, 21000);
+   /*  const promise=new Promise((resolve,rejected)=>{
+      console.log(this.resultFinal[0]);
+      if(this.resultFinal[0]){
+      resolve(this.resultFinal[0]);
+      }else{
+        rejected("error");
+      }
+    })
+return promise;  */   
+  }
   //Metodo para el envio de la informacion desde el formulario con todas las peticiones
-  loginUser(valuesForm: any) {
+  async loginUser(valuesForm: any): Promise<any>{
+
+      this.initInstance();
+      this.getTaskNumber();
+      this.startTask();
+      this.setVariablesProcess(valuesForm);
+      this.finishTask().then(res => {this.getResultLogin().then(res =>{this.selectDashboardLogin()})});
+      
+      /* return this.selectDashboardLogin(); */
+  }
+  
+
+    /* const finalpromise= new Promise((resolve,rejected)=>{
     this.initInstance();
     this.getTaskNumber();
     this.startTask();
     this.setVariablesProcess(valuesForm);
-    this.finishTask().then(res => {this.getFinalResult()});
+    this.finishTask().then(res => {this.getResultLogin()}).then(res =>{
+      this.selectDashboardLogin().then(res =>{
+        resolve(res);
+      }).catch(error=>rejected(error)) 
+    });
+    })
+   return finalpromise; */
+
+   /*Cuando se quiera trabajar con el resultado de listas inhibitorias */
+    /* this.finishTask().then(res => {this.getFinalResult()}); */
+    /*------------------------------------------------- */
+
+
     /* setTimeout(() => {
       this.fixResultFinal();
     }, 25000); */
    
-  }
+
+
   continue() {
     return this.fixResultFinal();
   }
