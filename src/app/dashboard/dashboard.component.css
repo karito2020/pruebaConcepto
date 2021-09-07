@@ -1,0 +1,16 @@
+.flex {
+  display: flex;
+}
+.image {
+  width: 100%;
+  margin-top: 5%;
+}
+
+.image img {
+  width: 90%;
+}
+
+.text {
+  width: 100%;
+  padding: 5%;
+}

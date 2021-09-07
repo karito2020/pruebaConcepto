@@ -1,0 +1,47 @@
+.flex {
+    display: flex;
+  }
+  
+  .form {
+    width: 50%;
+    height: 100vh;
+    text-align: center;
+    border-left: solid;
+    display: inline-block;
+  }
+  
+  .form-group label {
+    color: #000;
+  }
+  
+  .result {
+    width: 50%;
+    height: 100vh;
+    text-align: center;
+  }
+  
+  .result h1 {
+    color: #000;
+  }
+  
+  .left {
+    width: 100%;
+    text-align: left;
+  }
+  
+  h1 {
+    padding-top: 5%;
+    font-weight: bolder;
+  }
+  
+  .form img {
+    padding-top: 5%;
+    width: 30%;
+  }
+  
+  .result img {
+    display: flexbox;
+    width: 80%;
+    margin-top: 5%;
+  }
+  
